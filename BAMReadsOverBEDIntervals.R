@@ -4,7 +4,16 @@
 
 
 # script/function to compute BAM reads over a set of window intervals (commonly provided by BED file)
-# usage: Rscript Rscriptfilename.R
+# usage: Rscript Rscriptfilename.R <InputBEDFileName> <FlankBEDbp> <BinSize> <NameOfFinalRDSfile e.g. h3k27ac_COSMIC_oncogenes>
+# BAM files should be named with extension .bam inside th working directory
+
+
+
+
+
+### passing in command line arguments ----
+#!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE)
 
 
 # source("https://bioconductor.org/biocLite.R")
@@ -55,10 +64,10 @@ bed_to_granges <- function(file){
 
 
 # input bed interval file to compute bam reads over intervals, convert to Grange object
-gr = bed_to_granges('FusionsOncogenesAndOncogeneFusionGenes.bed')
+gr = bed_to_granges( args[1] )
 
 # if bed files are centered at the same site (e.g. chr1 100 100), extend this interval by n bp
-flankedgr = flank(gr, width = 1000000, both = T)
+flankedgr = flank(gr, width = args[2], both = T)
 head(flankedgr)
 
 
@@ -100,7 +109,9 @@ getBAMReadsWithinBinnedEnhancers = function (inputBEDfile, enhancerBinSizebp) { 
   
   
   # loop through the bam files. make sure each .bam has a .bai index
-  for (BAM in list.files(pattern = ".bam$")) { #list.files(path = '../',pattern = '.bam$')
+  for (BAM in 
+       list.files(pattern = ".bam$")
+       ) { #list.files(path = '../',pattern = '.bam$')
     
     cat('Now working on:',BAM,'\n')
     
@@ -212,7 +223,7 @@ getBAMReadsWithinBinnedEnhancers = function (inputBEDfile, enhancerBinSizebp) { 
                         function(x) (x[1]))),'BAM file. \n')
     
     # troubleshoot the NaNs and Infs 
-    save.image(file = paste0('individualCancers_COSMICOncogenesBinnedEnhancerMatrices',Sys.time(),'.RDS', collapse = "") )  
+    save.image(file = paste0( args[2], Sys.time(),'.RDS', collapse = "") )  
     
   } # end of each BAM file
   
@@ -224,7 +235,7 @@ getBAMReadsWithinBinnedEnhancers = function (inputBEDfile, enhancerBinSizebp) { 
 ptm = proc.time() # calc time it takes to run on system
 getBAMReadsWithinBinnedEnhancers(inputBEDfile = flankedgr,
                                  # topNEnhancersToSelect = 50,
-                                 enhancerBinSizebp = 1000)
+                                 enhancerBinSizebp = args[3])
 (proc.time() - ptm)[1]/60/60
 
 
@@ -234,7 +245,7 @@ ls(pattern = '*binnedEnhancer*')
 #save(list = ls(pattern = '*binnedEnhancer*'), file = paste0('COSMICOncogenesBinnedEnhancerMatrices.RDS',Sys.Date()))
 
 
-save.image(file = paste0('COSMICOncogenesBinnedEnhancerMatrices',Sys.time(),'.RDS'))
+save.image(file = paste0(args[4], Sys.time(),'.RDS'))
 
 
 
