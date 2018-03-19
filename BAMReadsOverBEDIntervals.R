@@ -198,9 +198,9 @@ getBAMReadsWithinBinnedEnhancers = function (inputBEDfile, enhancerBinSizebp) { 
     cat('About to compute library size of',BAM)
     
     # normlize the read count to the library size
-    CurrentBAMLibrarySizeInMillionsOfReads =  ( as.numeric(system(paste("samtools view", 
+    CurrentBAMLibrarySizeInMillionsOfReads =  ( as.numeric(system(paste("samtools view -F 0x04 -c", 
                                                                         BAM, 
-                                                                        " | wc -l",sep=" "), 
+                                                                        sep=" "), 
                                                                   intern = T)) 
                                                 / 1000000 ) # divide by 1e6 to get Reads Per Million
     cat('The RPM value for',BAM,'is',print(CurrentBAMLibrarySizeInMillionsOfReads),'\n')
