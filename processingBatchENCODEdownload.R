@@ -21,7 +21,7 @@ m[!duplicated(m$Experiment.target),]$Experiment.target
 
 
 # this still has duplicate experiment sets (i.e. multiple expts coming from each separate labs)
-subset = m[ m$Assembly == 'hg19' &  m$Output.type == 'alignments' & m$Biological.replicate.s. == '1'  & m$Biosample.treatments == "", ]$Experiment.target
+subset = m[ m$Assembly == 'hg19' &  m$Output.type == 'alignments' & m$Biological.replicate.s. == '1'  & m$Biosample.treatments == "", ]
 
 # this removes too many samples
 m[ m$Assembly == 'hg19' &  m$Output.type == 'alignments' & m$Biological.replicate.s. == '1'& !duplicated(m$Experiment.accession) , ]$Experiment.target
