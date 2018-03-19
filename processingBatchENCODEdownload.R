@@ -40,6 +40,7 @@ subset$File.accession [subset$File.accession %in% listedFiles]
 
 # now move all of these files into a subdir called subset
 # make new subdir
+system(command = 'rm -r subset', intern = F)
 system(command = 'mkdir subset', intern = F)
 
 # add the file extension name back to the desired subset files, pick the 1st one as all should be the same
@@ -51,14 +52,14 @@ for (subsetname in subset$File.accession) {
   print(subsetname)
   
   # concatenate the subset file root name and the extension name -- ENCF_____.bam
-  fullRawFilename = paste0(subsetname, subsetExtensionName, collapse = "")
+  fullRawFilename = paste0(subsetname, '.', subsetExtensionName, collapse = "")
   
   # or concatenate the Experiment.target (H3K27ac), Biosample.term.name i.e. cell line (A549), subset root name (ENCF____), the extension name (.bam)
   # pull the row in the df where the entry is located in order to get names of other
   idx = which(subset$File.accession == subsetname)
   
   # create the new file name based on this new string
-  NewFullRawFilename = paste0(subset$Experiment.target[idx] , subset$Biosample.term.name[idx], subsetname, subsetExtensionName, collapse = "")
+  NewFullRawFilename = paste0(subset$Experiment.target[idx], '.' , subset$Biosample.term.name[idx], '.' , subsetname, '.', subsetExtensionName, collapse = "")
   
   # rename a copy of this file as this string using cp
   system(command = sprintf('cp %s %s', fullRawFilename, NewFullRawFilename), intern = F)
