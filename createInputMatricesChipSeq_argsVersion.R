@@ -44,7 +44,7 @@ mat = matrix(data = NA,
 
 # fill out the matrix
 for (guideIndex in 1:nrow(indexFile)) {
-  mat [guideIndex, ] = readFile$V3[indexFile$V2[guideIndex]] : readFile$V3[indexFile$V3[guideIndex]] # start to end
+  mat [guideIndex, ] = readFile$V3[indexFile$V2[guideIndex] : indexFile$V3[guideIndex]]  # start to end
   
 }
 
