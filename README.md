@@ -1,1 +1,1 @@
-# personal repo for applying Deep Learning to CRISPR
+Applying Deep Learning to CRISPR
