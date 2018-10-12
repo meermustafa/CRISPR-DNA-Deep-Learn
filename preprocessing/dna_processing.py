@@ -20,7 +20,7 @@ def get_data(filename):
 flank_size = 100
 
 # master file
-crispr_file = "/Users/jason/PycharmProjects/Tsirigos/deeplearning/A549_Rep1_MiSeqRun_finalCRISPRiScores2018-03-01.csv"
+crispr_file = ""
 crispr_df = pd.read_csv(crispr_file)
 
 label_encoder = LabelEncoder()
@@ -70,8 +70,3 @@ for count, row in get_data(crispr_file):
     if count == 3:
         break
     count += 1
-
-# first 3 guide sequences (from master file)
-# AATGTAGTGTACTCACTGAT
-# GCTTGTAGGAGGGAAGAAGG
-# GTGCTTGTAGGAGGGAAGAA
